@@ -41,12 +41,22 @@ do
         done
         dict3[$key2]=$(( ${dict3[$key2]}+1 ))
 done
+max=0
 for index in  ${!dict[@]}
 do
         echo "Number of times $index appears is "${dict[$index]}
         percent=`echo ${dict[$index]} $n | awk '{print $1/$2}'`
         percentage=`echo $percent 100 | awk '{print $1*$2}'`
         echo "The percentage of $index is "$percentage
+	if [ $max -eq 0 ]
+	then
+		max=${dict[$index]}
+		combination=$index
+	elif [ ${dict[$index]} -gt $max ]
+	then
+		max=${dict[$index]}
+		combination=$index
+	fi
 done
 for index in  ${!dict2[@]}
 do
@@ -54,6 +64,11 @@ do
         percent=`echo ${dict2[$index]} $n | awk '{print $1/$2}'`
         percentage=`echo $percent 100 | awk '{print $1*$2}'`
         echo "The percentage of $index is "$percentage
+	if [ ${dict2[$index]} -gt $max ]
+        then
+                max=${dict2[$index]}
+                combination=$index
+        fi
 done
 for index in  ${!dict3[@]}
 do
@@ -61,4 +76,10 @@ do
         percent=`echo ${dict3[$index]} $n | awk '{print $1/$2}'`
         percentage=`echo $percent 100 | awk '{print $1*$2}'`
         echo "The percentage of $index is "$percentage
+	if [ ${dict3[$index]} -gt $max ]
+        then
+                max=${dict3[$index]}
+                combination=$index
+        fi
 done
+echo "Winning combination is "$combination
